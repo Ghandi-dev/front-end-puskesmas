@@ -24,7 +24,7 @@ const instance = axios.create({
 instance.interceptors.response.use(
 	(response) => response,
 	async (error) => {
-		console.log("🚀 ~ file: instance.ts:45 ~ error:", error);
+		console.log("error", error);
 
 		const status = error.response?.status;
 

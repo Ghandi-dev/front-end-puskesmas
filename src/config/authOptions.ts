@@ -15,12 +15,12 @@ export const authOptions: NextAuthOptions = {
 			id: "credentials",
 			name: "credentials",
 			credentials: {
-				email: { label: "email", type: "text" },
+				identifier: { label: "identifier", type: "text" },
 				password: { label: "Password", type: "password" },
 			},
-			async authorize(credentials: Record<"email" | "password", string> | undefined): Promise<UserExtended | null> {
-				const { email, password } = credentials as { email: string; password: string };
-				const result = await authServices.login({ email, password });
+			async authorize(credentials: Record<"identifier" | "password", string> | undefined): Promise<UserExtended | null> {
+				const { identifier, password } = credentials as { identifier: string; password: string };
+				const result = await authServices.login({ identifier, password });
 
 				const accessToken = result.data.data;
 				const me = await authServices.getProfileWithToken(accessToken);
