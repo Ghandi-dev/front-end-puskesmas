@@ -100,3 +100,23 @@
     --chart-5: oklch(60% 0.27 350);
   }
 }
+
+@media print {
+  @page {
+    size: auto; /* atau size: 80mm auto; jika ingin fixed */
+    margin: 0;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .print-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+}
+

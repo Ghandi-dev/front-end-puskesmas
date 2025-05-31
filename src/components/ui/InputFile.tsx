@@ -60,26 +60,27 @@ const InputFile = (props: PropTypes) => {
 	};
 
 	return (
-		<div>
+		<div className="flex h-full w-full flex-col items-center justify-center">
 			{label}
 			<label
 				ref={drop}
 				htmlFor={`dropzone-file-${dropZoneId}`}
 				className={cn(
-					"flex h-70 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 hover:border-gray-400 hover:bg-gray-100",
+					"flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 hover:border-gray-400 hover:bg-gray-100",
 					className,
 					{ "border-danger-500": isInvalid }
 				)}
 			>
 				{preview && (
-					<div className="relative flex flex-col items-center justify-center gap-2 p-5">
-						<div className="mb-2 w-1/2">
-							<Image fill src={preview} alt="file" className="!relative" />
+					<div className="relative flex flex-col items-center justify-center p-5 h-full w-full">
+						<div className="mb-2 w-full m-4">
+							<Image fill src={preview} alt="file" className="object-contain" />
 						</div>
 						<Button
+							type="button"
 							onClick={onDelete}
 							disabled={isDeleting}
-							className="justify-cente absolute right-2 top-2 flex h-9 w-9 items-center rounded bg-red-700 hover:bg-red-300"
+							className="justify-cente absolute right-10 top-10 flex h-9 w-9 items-center rounded bg-red-700 hover:bg-red-300"
 						>
 							{isDeleting ? <Spinner /> : <Trash2 className="h-5 w-5 text-danger-500" />}
 						</Button>

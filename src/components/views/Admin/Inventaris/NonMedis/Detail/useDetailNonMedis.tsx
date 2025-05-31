@@ -1,19 +1,35 @@
 "use client";
+
 import useMediaHandling from "@/hooks/useMediaHandling";
 import inventarisService from "@/service/invetaris.service";
 import roomServices from "@/service/room.service";
-import { Inventory, inventorySchema } from "@/types/Inventory";
+import { inventorySchema, Inventory } from "@/types/Inventory";
 import { RoomSelected } from "@/types/Room";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-const useCreate = () => {
+const useDetailNonMedis = () => {
 	const queryClient = useQueryClient();
+	const id = useParams().id as string;
+	const pathName = usePathname();
 	const router = useRouter();
 	const { isPendingMutateUploadFile, isPendingMutateDeleteFile, handleDeleteFile, handleUploadFile } = useMediaHandling();
+
+	const getInventoryById = async () => {
+		const res = await inventarisService.getById(id);
+		return res.data.data as Inventory;
+	};
+
+	const { data: inventoryData, isLoading: isLoadingInventory } = useQuery({
+		queryKey: ["inventory", id, pathName],
+		queryFn: getInventoryById,
+		enabled: !!id,
+		refetchOnMount: true,
+		refetchOnWindowFocus: true,
+	});
 
 	const form = useForm({
 		mode: "onSubmit",
@@ -33,26 +49,26 @@ const useCreate = () => {
 		},
 	});
 
-	const createInventory = async (data: Inventory) => {
-		const res = await inventarisService.create(data);
+	const updateInventory = async ({ id, data }: { id: string; data: Inventory }) => {
+		const res = await inventarisService.update(id, data);
 		return res.data;
 	};
 
-	const { mutate: createInventoryMutate, isPending: isPendingCreateInventory } = useMutation({
-		mutationFn: createInventory,
+	const { mutate: updateInventoryMutate, isPending: isPendingUpdateInventory } = useMutation({
+		mutationFn: updateInventory,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["Inventories"] });
-			toast.success("Berhasil menambahkan inventaris");
-			form.reset();
+			queryClient.invalidateQueries({ queryKey: ["inventory"] });
+			toast.success("Berhasil update inventaris");
 			router.push("/admin/inventaris/non-medis");
 		},
 		onError: (error) => {
-			toast.error(`Gagal menambahkan inventaris: ${error instanceof Error ? error.message : "Unknown error"}`);
+			toast.error(`Gagal update inventaris: ${error instanceof Error ? error.message : "Unknown error"}`);
 		},
 	});
 
-	const handleCreateInventory = (data: Inventory) => {
-		createInventoryMutate(data);
+	const handleUpdateInventory = (data: Inventory) => {
+		updateInventoryMutate({ id, data });
 	};
 
 	// Upload and delete image handlers
@@ -92,10 +108,13 @@ const useCreate = () => {
 	});
 
 	return {
+		inventoryData,
+		isLoadingInventory,
+
 		form,
-		handleCreateInventory,
-		createInventoryMutate,
-		isPendingCreateInventory,
+		handleUpdateInventory,
+		updateInventoryMutate,
+		isPendingUpdateInventory,
 
 		dataRooms,
 		isLoadingRooms,
@@ -110,4 +129,4 @@ const useCreate = () => {
 	};
 };
 
-export default useCreate;
+export default useDetailNonMedis;

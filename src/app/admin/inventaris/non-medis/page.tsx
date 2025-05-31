@@ -2,7 +2,8 @@ import NonMedis from "@/components/views/Admin/Inventaris/NonMedis/NonMedis";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "Puskesmas | Dashboard",
+	title: "Puskesmas | Non Medis",
+	description: "Halaman Non Medis untuk mengelola inventaris non medis di Puskesmas",
 };
 
 export default function Page() {

@@ -27,6 +27,11 @@ const MENU_LIST = [
 		],
 	},
 	{
+		title: "Ruangan",
+		url: "/admin/ruangan",
+		icon: SquareTerminal,
+	},
+	{
 		title: "Laporan",
 		url: "/admin/laporan",
 		icon: SquareTerminal,

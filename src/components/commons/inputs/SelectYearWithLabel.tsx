@@ -21,8 +21,8 @@ export function SelectYearWithLabel<S>({ fieldTitle, nameInSchema, placeholder =
 	const form = useFormContext();
 
 	const currentYear = new Date().getFullYear();
-	const yearOptions = Array.from({ length: currentYear - 1970 + 1 }, (_, i) => {
-		const year = (1970 + i).toString();
+	const yearOptions = Array.from({ length: 30 }, (_, i) => {
+		const year = (currentYear - i).toString();
 		return { label: year, value: year };
 	});
 
@@ -41,7 +41,7 @@ export function SelectYearWithLabel<S>({ fieldTitle, nameInSchema, placeholder =
 									role="combobox"
 									className={cn("w-full justify-between border-primary-foreground", !field.value && "text-muted-foreground", className)}
 								>
-									{yearOptions.find((opt) => opt.value === field.value)?.label || placeholder}
+									{yearOptions.find((opt) => opt.value === field.value.toString())?.label || placeholder}
 									<ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
 								</Button>
 							</FormControl>
@@ -62,7 +62,7 @@ export function SelectYearWithLabel<S>({ fieldTitle, nameInSchema, placeholder =
 												}}
 											>
 												{opt.label}
-												<Check className={cn("ml-auto h-4 w-4", opt.value === field.value ? "opacity-100" : "opacity-0")} />
+												<Check className={cn("ml-auto h-4 w-4", opt.value === field.value.toString() ? "opacity-100" : "opacity-0")} />
 											</CommandItem>
 										))}
 									</CommandGroup>

@@ -22,7 +22,7 @@ const useCreate = () => {
 			code: "",
 			name: "",
 			brand: "",
-			type: "non_medic",
+			type: "vehicle",
 			material: "",
 			year: new Date().getFullYear(),
 			quantity: 1,
@@ -30,6 +30,12 @@ const useCreate = () => {
 			mutationRemarks: "",
 			room: "",
 			image: "",
+			vehicle_details: {
+				chassis_number: "",
+				engine_number: "",
+				license_plate: "",
+				bpkb_number: "",
+			},
 		},
 	});
 
@@ -41,10 +47,10 @@ const useCreate = () => {
 	const { mutate: createInventoryMutate, isPending: isPendingCreateInventory } = useMutation({
 		mutationFn: createInventory,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["Inventories"] });
+			queryClient.invalidateQueries({ queryKey: ["Inventories_vehicle"] });
 			toast.success("Berhasil menambahkan inventaris");
 			form.reset();
-			router.push("/admin/inventaris/non-medis");
+			router.push("/admin/inventaris/kendaraan");
 		},
 		onError: (error) => {
 			toast.error(`Gagal menambahkan inventaris: ${error instanceof Error ? error.message : "Unknown error"}`);

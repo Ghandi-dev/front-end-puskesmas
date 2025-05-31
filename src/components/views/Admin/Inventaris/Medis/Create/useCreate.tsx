@@ -22,7 +22,7 @@ const useCreate = () => {
 			code: "",
 			name: "",
 			brand: "",
-			type: "non_medic",
+			type: "medic",
 			material: "",
 			year: new Date().getFullYear(),
 			quantity: 1,
@@ -41,10 +41,10 @@ const useCreate = () => {
 	const { mutate: createInventoryMutate, isPending: isPendingCreateInventory } = useMutation({
 		mutationFn: createInventory,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["Inventories"] });
+			queryClient.invalidateQueries({ queryKey: ["Inventories_medic"] });
 			toast.success("Berhasil menambahkan inventaris");
 			form.reset();
-			router.push("/admin/inventaris/non-medis");
+			router.push("/admin/inventaris/medis");
 		},
 		onError: (error) => {
 			toast.error(`Gagal menambahkan inventaris: ${error instanceof Error ? error.message : "Unknown error"}`);

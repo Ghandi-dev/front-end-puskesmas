@@ -11,14 +11,14 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const useNonMedis = () => {
+const useMedis = () => {
 	const { handleDeleteFile } = useMediaHandling();
 
 	const [selectedInventory, setSelectedInventory] = useState<InventorySelected>({} as InventorySelected);
 	const { currentLimit, currentPage, currentSearch, condition, room, year, setCondition, setRoom, setYear } = useChangeUrl();
 
 	const getInventories = async () => {
-		let params = `limit=${currentLimit}&page=${currentPage}&type=non_medic`;
+		let params = `limit=${currentLimit}&page=${currentPage}&type=medic`;
 		if (currentSearch) {
 			params += `&search=${currentSearch}`;
 		}
@@ -43,7 +43,7 @@ const useNonMedis = () => {
 		isLoading: isLoadingInventories,
 		refetch: refetchInventories,
 	} = useQuery({
-		queryKey: ["Inventories", currentLimit, currentPage, currentSearch, condition, room, year],
+		queryKey: ["Inventories_medic", currentLimit, currentPage, currentSearch, condition, room, year],
 		queryFn: getInventories,
 		enabled: !!currentLimit && !!currentPage,
 	});
@@ -106,4 +106,4 @@ const useNonMedis = () => {
 	};
 };
 
-export default useNonMedis;
+export default useMedis;

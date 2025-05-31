@@ -1,40 +1,55 @@
 "use client";
-import useCreate from "./useCreate";
-import { Form } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
-import { InputWithLabel } from "@/components/commons/inputs/InputWithLabel";
-import { Inventory } from "@/types/Inventory";
-import { SelectWithLabel } from "@/components/commons/inputs/SelectWithLabel";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+
 import { FileUploadWithLabel } from "@/components/commons/inputs/FileUploadWithLabel";
+import { InputWithLabel } from "@/components/commons/inputs/InputWithLabel";
 import { SelectPopoverWithLabel } from "@/components/commons/inputs/SelectPopoverWithLabel";
-import { RoomSelected } from "@/types/Room";
-import { Skeleton } from "@/components/ui/skeleton";
+import { SelectWithLabel } from "@/components/commons/inputs/SelectWithLabel";
 import { SelectYearWithLabel } from "@/components/commons/inputs/SelectYearWithLabel";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Spinner } from "@/components/ui/spinner";
+import { cn } from "@/lib/utils";
+import { Inventory } from "@/types/Inventory";
+import { RoomSelected } from "@/types/Room";
+import useDetailNonMedis from "./useDetailNonMedis";
+import { Form } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 import { TextareaWithLabel } from "@/components/commons/inputs/TextAreaWithLabel";
 
-const Create = () => {
+const DetailNonMedis = () => {
 	const {
+		inventoryData,
+
 		form,
-		handleCreateInventory,
-		isPendingCreateInventory,
+		handleUpdateInventory,
+		isPendingUpdateInventory,
+
+		dataRooms,
+		isLoadingRooms,
+
 		isPendingMutateUploadFile,
 		isPendingMutateDeleteFile,
 		handleUploadImage,
 		handleDeleteImage,
 		preview,
+	} = useDetailNonMedis();
 
-		dataRooms,
-		isLoadingRooms,
-	} = useCreate();
+	useEffect(() => {
+		if (inventoryData) {
+			form.reset({
+				...inventoryData,
+				room: inventoryData?.room || "",
+			});
+		}
+	}, [inventoryData]);
+
 	return (
 		<div className="flex flex-col gap-4 p-6 md:p-10">
-			<h1 className="text-2xl font-bold">Tambah Inventaris Non Medis</h1>
+			<h1 className="text-2xl font-bold">Update Inventaris Non Medis</h1>
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(handleCreateInventory)} className="mt-4 flex flex-col gap-4">
+				<form onSubmit={form.handleSubmit(handleUpdateInventory)} className="mt-4 flex flex-col gap-4">
 					<div className={cn("grid grid-cols-1 lg:grid-cols-2 items-start", Object.keys(form.formState.errors).length > 0 ? "gap-6" : "gap-6")}>
-						<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+						<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
 							<InputWithLabel<Inventory> fieldTitle="Kode" nameInSchema="code" />
 							<InputWithLabel<Inventory> fieldTitle="Nama" nameInSchema="name" />
 							<InputWithLabel<Inventory> fieldTitle="Merk/Tipe" nameInSchema="brand" />
@@ -80,8 +95,8 @@ const Create = () => {
 						</div>
 					</div>
 					<div className="flex items-center justify-end gap-4 mt-4">
-						<Button type="submit" className="w-full lg:w-2/12 bg-primary" disabled={isPendingCreateInventory}>
-							{isPendingCreateInventory ? <Spinner /> : "Simpan"}
+						<Button type="submit" className="w-full lg:w-2/12 bg-primary" disabled={isPendingUpdateInventory}>
+							{isPendingUpdateInventory ? <Spinner /> : "Simpan"}
 						</Button>
 					</div>
 				</form>
@@ -90,4 +105,4 @@ const Create = () => {
 	);
 };
 
-export default Create;
+export default DetailNonMedis;

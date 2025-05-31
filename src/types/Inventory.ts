@@ -35,3 +35,6 @@ export type Inventory = yup.InferType<typeof inventorySchema>;
 export type InventorySelected = Omit<Inventory, "_id"> & {
 	_id: string;
 };
+export type InventoryVehicle = Omit<Inventory, "_id"> & {
+	vehicle_details: yup.InferType<typeof vehicleDetailSchema>;
+};

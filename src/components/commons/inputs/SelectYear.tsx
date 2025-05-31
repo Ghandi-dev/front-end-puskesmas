@@ -7,22 +7,16 @@ interface SelectYearProps {
 	label?: string;
 	value: number | undefined;
 	onChange: (year: number) => void;
-	startYear?: number;
-	endYear?: number;
 	id?: string;
 	className?: string;
 }
 
-const SelectYear: React.FC<SelectYearProps> = ({
-	value,
-	onChange,
-	startYear = 1970,
-	endYear = new Date().getFullYear(),
-	id = "select-year",
-	className = "",
-	label,
-}) => {
-	const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => endYear - i);
+const SelectYear: React.FC<SelectYearProps> = ({ value, onChange, id = "select-year", className = "", label }) => {
+	const currentYear = new Date().getFullYear();
+	const years = Array.from({ length: 30 }, (_, i) => {
+		const year = (currentYear - i).toString();
+		return { label: year, value: year };
+	});
 
 	return (
 		<div className={`flex flex-col gap-1 ${className}`}>
@@ -33,8 +27,8 @@ const SelectYear: React.FC<SelectYearProps> = ({
 				<SelectContent className="border-primary">
 					<SelectGroup>
 						{years.map((year) => (
-							<SelectItem key={year} value={year.toString()}>
-								{year}
+							<SelectItem key={year.value} value={year.value}>
+								{year.label}
 							</SelectItem>
 						))}
 					</SelectGroup>

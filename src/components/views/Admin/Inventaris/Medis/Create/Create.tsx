@@ -30,7 +30,7 @@ const Create = () => {
 	} = useCreate();
 	return (
 		<div className="flex flex-col gap-4 p-6 md:p-10">
-			<h1 className="text-2xl font-bold">Tambah Inventaris Non Medis</h1>
+			<h1 className="text-2xl font-bold">Tambah Inventaris Medis</h1>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(handleCreateInventory)} className="mt-4 flex flex-col gap-4">
 					<div className={cn("grid grid-cols-1 lg:grid-cols-2 items-start", Object.keys(form.formState.errors).length > 0 ? "gap-6" : "gap-6")}>

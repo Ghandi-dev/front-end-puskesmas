@@ -5,22 +5,22 @@ import DataTable from "@/components/commons/table/DataTable";
 import useChangeUrl from "@/hooks/useChangeUrl";
 import { InventorySelected } from "@/types/Inventory";
 import { Key, useCallback, useEffect, useMemo, useState } from "react";
-import useNonMedis from "./useNonMedis";
 import { MenuSquare, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { COLUMN_LIST_NON_MEDIS } from "./NonMedis.constant";
+import { COLUMN_LIST_NON_MEDIS } from "./Kendaraan.constant";
 import { useRouter } from "next/navigation";
 import AlertDialogDelete from "@/components/commons/alert-dialog/AlertDialogDelete";
 import DynamicDialog from "@/components/commons/dialog/DynamicDialog";
 import { MultiSelect } from "@/components/commons/multi-select/MultiSelect";
 import { CONDITION } from "@/constant/list.constants";
+import useKendaraan from "./useKendaraan";
 
-const NonMedis = () => {
+const Kendaraan = () => {
 	const router = useRouter();
 	const { setUrl, handleChangeSearch } = useChangeUrl();
 	const { dataInventories, isLoadingInventories, handleDeleteInventory, setSelectedInventory, dataRooms, condition, room, setCondition, setRoom } =
-		useNonMedis();
+		useKendaraan();
 
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 	const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
@@ -41,7 +41,7 @@ const NonMedis = () => {
 							// hideButtonActivate={true}
 							id={inventory._id}
 							onPressButtonDetail={() => {
-								router.push(`/admin/inventaris/non-medis/${inventory._id}`);
+								router.push(`/admin/inventaris/kendaraan/${inventory._id}`);
 							}}
 							onPressButtonDelete={() => {
 								setSelectedInventory(inventory);
@@ -73,7 +73,7 @@ const NonMedis = () => {
 						<Printer />
 					</Button> */}
 				</div>
-				<Button className="bg-primary" onClick={() => router.push("non-medis/create")}>
+				<Button className="bg-primary" onClick={() => router.push("kendaraan/create")}>
 					{"Tambah Inventaris"}
 				</Button>
 			</div>
@@ -95,7 +95,7 @@ const NonMedis = () => {
 			/>
 
 			{/* Filter */}
-			<DynamicDialog open={isFilterDialogOpen} onOpenChange={setIsFilterDialogOpen} title="Filter Non Medis">
+			<DynamicDialog open={isFilterDialogOpen} onOpenChange={setIsFilterDialogOpen} title="Filter Non Kendaraan">
 				<MultiSelect
 					className="w-full"
 					placeholder="Pilih Kondisi"
@@ -144,4 +144,4 @@ const NonMedis = () => {
 	);
 };
 
-export default NonMedis;
+export default Kendaraan;
