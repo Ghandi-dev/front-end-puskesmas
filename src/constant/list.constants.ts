@@ -11,4 +11,10 @@ const LIMIT_BANNER = 5;
 const LIMIT_EVENT = 4;
 const LIMIT_CATEGORY = 8;
 
+export enum CONDITION {
+	GOOD = "Baik",
+	FAIR = "Kurang Baik",
+	DAMAGED = "Rusak Berat",
+}
+
 export { LIMIT_LIST, DELAY, PAGE_DEFAULT, LIMIT_DEFAULT, LIMIT_BANNER, LIMIT_EVENT, LIMIT_CATEGORY };

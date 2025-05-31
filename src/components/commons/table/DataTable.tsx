@@ -44,7 +44,6 @@ const DataTable = <S extends { _id: string | number }>(props: PropTypes<S>) => {
 		),
 		[currentLimit, currentPage, handleChangeLimit, handleChangePage, showLimit, totalPages]
 	);
-
 	return (
 		<div className="space-y-4">
 			{topContent}
@@ -53,7 +52,7 @@ const DataTable = <S extends { _id: string | number }>(props: PropTypes<S>) => {
 					<TableHeader className="bg-primary text-primary-foreground">
 						<TableRow>
 							{columns.map((column) => (
-								<TableHead className="text-primary-foreground font-bold" key={column.u_id as string}>
+								<TableHead className="text-primary-foreground font-bold" key={column.uid as string}>
 									{column.name as string}
 								</TableHead>
 							))}

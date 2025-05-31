@@ -1,6 +1,7 @@
 import { DELAY, LIMIT_DEFAULT, PAGE_DEFAULT } from "@/constant/list.constants";
 import useDebounce from "./useDebounce";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
 const useChangeUrl = () => {
 	const router = useRouter();
@@ -13,6 +14,13 @@ const useChangeUrl = () => {
 	const currentLimit = limitParams ?? LIMIT_DEFAULT;
 	const currentPage = pageParams ?? PAGE_DEFAULT;
 	const currentSearch = searchParams.get("search") ?? "";
+
+	const [condition, setCondition] = useState<string[]>([]);
+	const [room, setRoom] = useState<string[]>([]);
+	const [year, setYear] = useState<{ start: number | null; end: number | null }>({
+		start: 0,
+		end: new Date().getFullYear(),
+	});
 
 	const updateParams = (params: Record<string, string | number>) => {
 		const url = new URLSearchParams(searchParams);
@@ -76,6 +84,13 @@ const useChangeUrl = () => {
 		handleChangeLimit,
 		handleChangeSearch,
 		handleClearSearch,
+
+		condition,
+		setCondition,
+		room,
+		setRoom,
+		year,
+		setYear,
 	};
 };
 
