@@ -56,9 +56,9 @@ const useDetailMedis = () => {
 
 	const { mutate: updateInventoryMutate, isPending: isPendingUpdateInventory } = useMutation({
 		mutationFn: updateInventory,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["Inventories_medic"] });
-			queryClient.invalidateQueries({ queryKey: ["inventory_medic"] });
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: ["Inventories_medic"], exact: false });
+			await queryClient.invalidateQueries({ queryKey: ["inventory_medic"], exact: false });
 			toast.success("Berhasil update inventaris");
 			router.push("/admin/inventaris/medis");
 		},

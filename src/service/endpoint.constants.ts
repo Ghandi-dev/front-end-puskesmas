@@ -3,6 +3,7 @@ const endpoint = {
 	INVENTORY: "/inventory",
 	ROOM: "/room",
 	MEDIA: "/media",
+	DASHBOARD: "/dashboard",
 };
 
 export default endpoint;

@@ -62,9 +62,9 @@ const useDetailKendaraan = () => {
 
 	const { mutate: updateInventoryMutate, isPending: isPendingUpdateInventory } = useMutation({
 		mutationFn: updateInventory,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["Inventories_vehicle"] });
-			queryClient.invalidateQueries({ queryKey: ["inventory_vehicle"] });
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: ["Inventories_vehicle"], exact: false });
+			await queryClient.invalidateQueries({ queryKey: ["inventory_vehicle"], exact: false });
 			toast.success("Berhasil update inventaris");
 			router.push("/admin/inventaris/kendaraan");
 		},

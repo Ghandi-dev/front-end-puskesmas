@@ -57,8 +57,8 @@ const useDetailNonMedis = () => {
 	const { mutate: updateInventoryMutate, isPending: isPendingUpdateInventory } = useMutation({
 		mutationFn: updateInventory,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["Inventories"] });
-			queryClient.invalidateQueries({ queryKey: ["inventory"] });
+			queryClient.invalidateQueries({ queryKey: ["Inventories"], exact: false });
+			queryClient.invalidateQueries({ queryKey: ["inventory"], exact: false });
 			toast.success("Berhasil update inventaris");
 			router.push("/admin/inventaris/non-medis");
 		},

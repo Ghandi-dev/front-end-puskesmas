@@ -41,7 +41,7 @@ const useCreate = () => {
 	const { mutate: createInventoryMutate, isPending: isPendingCreateInventory } = useMutation({
 		mutationFn: createInventory,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["Inventories"] });
+			queryClient.invalidateQueries({ queryKey: ["Inventories"], exact: false });
 			toast.success("Berhasil menambahkan inventaris");
 			form.reset();
 			router.push("/admin/inventaris/non-medis");
