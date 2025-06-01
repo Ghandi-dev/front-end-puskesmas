@@ -1,5 +1,22 @@
 import * as yup from "yup";
 
+export enum TYPE {
+	MEDIC = "MEDIS",
+	NON_MEDIC = "NON MEDIS",
+	VEHICLE = "KENDARAAN",
+}
+
+export const TYPE_MAP: Record<TYPE, string> = {
+	[TYPE.MEDIC]: "medic",
+	[TYPE.NON_MEDIC]: "non_medic",
+	[TYPE.VEHICLE]: "vehicle",
+};
+
+export const TYPE_REVERSE_MAP: Record<string, TYPE> = Object.entries(TYPE_MAP).reduce((acc, [key, value]) => {
+	acc[value] = key as TYPE;
+	return acc;
+}, {} as Record<string, TYPE>);
+
 export const vehicleDetailSchema = yup.object().shape({
 	chassis_number: yup.string().required("Chassis number is required"),
 	engine_number: yup.string().required("Engine number is required"),
@@ -8,7 +25,7 @@ export const vehicleDetailSchema = yup.object().shape({
 });
 
 export const inventorySchema = yup.object().shape({
-	code: yup.string().required("Code is required"),
+	code: yup.string().required("Code is required").matches(/^\d+$/, "Code must contain only numbers").length(10, "Code must be exactly 10 digits long"),
 	name: yup.string().required("Name is required"),
 	brand: yup.string().required("Brand is required"),
 	type: yup.string().oneOf(["medic", "non_medic", "vehicle"]).required("Type is required"),

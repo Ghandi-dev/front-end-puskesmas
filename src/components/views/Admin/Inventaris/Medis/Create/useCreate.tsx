@@ -16,7 +16,7 @@ const useCreate = () => {
 	const { isPendingMutateUploadFile, isPendingMutateDeleteFile, handleDeleteFile, handleUploadFile } = useMediaHandling();
 
 	const form = useForm({
-		mode: "onSubmit",
+		mode: "onChange",
 		resolver: yupResolver(inventorySchema),
 		defaultValues: {
 			code: "",

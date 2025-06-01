@@ -1,4 +1,5 @@
 import { CONDITION } from "@/constant/list.constants";
+import { TYPE, TYPE_MAP, TYPE_REVERSE_MAP } from "@/types/Inventory";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -19,6 +20,30 @@ export function translateConditionToBackend(conditions: CONDITION | CONDITION[])
 		return conditions.map((c) => CONDITION_MAP[c]);
 	}
 	return CONDITION_MAP[conditions];
+}
+
+/**
+ * Translate type(s) from enum label to backend key.
+ * @param types - Single or array of TYPE enum values (e.g., "Alat Kesehatan")
+ * @returns string or array of string ("medic", "non_medic", etc.)
+ */
+export function translateTypeToBackend(types: TYPE | TYPE[]): string | string[] {
+	if (Array.isArray(types)) {
+		return types.map((t) => TYPE_MAP[t]);
+	}
+	return TYPE_MAP[types];
+}
+
+/**
+ * Translate type(s) from backend key to frontend enum label.
+ * @param types - Single or array of string from backend ("medic", "non_medic", etc.)
+ * @returns TYPE or array of TYPE enum values ("Alat Kesehatan", etc.)
+ */
+export function translateTypeFromBackend(types: string | string[]): TYPE | TYPE[] {
+	if (Array.isArray(types)) {
+		return types.map((t) => TYPE_REVERSE_MAP[t]);
+	}
+	return TYPE_REVERSE_MAP[types];
 }
 
 export function cn(...inputs: ClassValue[]) {

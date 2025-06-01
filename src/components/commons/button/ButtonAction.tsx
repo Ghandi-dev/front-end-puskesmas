@@ -6,37 +6,49 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 interface PropTypes {
 	id?: string;
-	onPressButtonDetail: () => void;
+	onPressButtonDetail?: () => void;
 	onPressButtonDelete?: () => void;
-	hideButtonActivate?: boolean;
+	hiddenButtonQR?: boolean;
 	hideButtonDelete?: boolean;
+	hiddenButtonDetail?: boolean;
 	isPendingActivate?: boolean;
 }
 
-const ButtonAction = ({ id, onPressButtonDetail, onPressButtonDelete, hideButtonDelete = false }: PropTypes) => {
+const ButtonAction = ({
+	id,
+	onPressButtonDetail,
+	onPressButtonDelete,
+	hideButtonDelete = false,
+	hiddenButtonQR = false,
+	hiddenButtonDetail = false,
+}: PropTypes) => {
 	return (
 		<TooltipProvider>
 			<div className="flex items-center gap-2">
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<Button variant="ghost" size="icon" onClick={() => window.open(`/cetak-qr/${id}`, "_blank")}>
-							<QrCode className="w-4 h-4 text-black" />
-						</Button>
-					</TooltipTrigger>
-					<TooltipContent side="right" className="w-fit">
-						<p>Cetak QR</p>
-					</TooltipContent>
-				</Tooltip>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<Button variant="ghost" size="icon" onClick={onPressButtonDetail}>
-							<Eye className="w-4 h-4 text-blue-600" />
-						</Button>
-					</TooltipTrigger>
-					<TooltipContent side="right" className="w-fit">
-						<p>Detail</p>
-					</TooltipContent>
-				</Tooltip>
+				{!hiddenButtonQR && (
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button variant="ghost" size="icon" onClick={() => window.open(`/cetak-qr/${id}`, "_blank")}>
+								<QrCode className="w-4 h-4 text-black" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent side="right" className="w-fit">
+							<p>Cetak QR</p>
+						</TooltipContent>
+					</Tooltip>
+				)}
+				{!hiddenButtonDetail && (
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button variant="ghost" size="icon" onClick={onPressButtonDetail}>
+								<Eye className="w-4 h-4 text-blue-600" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent side="right" className="w-fit">
+							<p>Detail</p>
+						</TooltipContent>
+					</Tooltip>
+				)}
 
 				{!hideButtonDelete && (
 					<Tooltip>
