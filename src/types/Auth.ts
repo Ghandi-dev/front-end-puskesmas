@@ -18,7 +18,7 @@ interface JWTExtended extends JWT {
 interface Profile {
 	_id?: string;
 	email?: string;
-	fullName?: string;
+	fullname?: string;
 	isActive?: boolean;
 	profilePicture?: string | FileList;
 	role?: string;

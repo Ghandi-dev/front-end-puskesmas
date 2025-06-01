@@ -72,15 +72,28 @@ export function NavMain({
 						</Collapsible>
 					) : (
 						<SidebarMenuItem key={item.title}>
-							<Link href={item.url}>
+							{item.url === "/scanner" ? (
+								// menuju scanner menggunakan anchor tag untuk menghindari masalah dengan Next.js
 								<SidebarMenuButton
 									tooltip={item.title}
 									className={cn("hover:bg-primary hover:text-primary-foreground", pathname.includes(item.url) && "bg-primary text-primary-foreground")}
 								>
 									{item.icon && <item.icon />}
-									<span>{item.title}</span>
+									<a href={item.url} target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-2">
+										{item.title}
+									</a>
 								</SidebarMenuButton>
-							</Link>
+							) : (
+								<Link href={item.url}>
+									<SidebarMenuButton
+										tooltip={item.title}
+										className={cn("hover:bg-primary hover:text-primary-foreground", pathname.includes(item.url) && "bg-primary text-primary-foreground")}
+									>
+										{item.icon && <item.icon />}
+										<span>{item.title}</span>
+									</SidebarMenuButton>
+								</Link>
+							)}
 						</SidebarMenuItem>
 					)
 				)}

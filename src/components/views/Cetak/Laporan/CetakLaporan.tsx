@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { InventorySelected } from "@/types/Inventory";
 import { RoomSelected } from "@/types/Room";
 import JenisInventaris from "./JenisInventaris";
+import { useEffect } from "react";
 
 interface PropsType {
 	inventories: InventorySelected[];
@@ -12,6 +13,11 @@ interface PropsType {
 }
 
 const CetakLaporan = ({ inventories, isLoading, room }: PropsType) => {
+	useEffect(() => {
+		// Bersihkan hanya sekali setelah halaman load
+		localStorage.removeItem("laporanFilters");
+	}, []);
+
 	if (!inventories || inventories.length === 0) {
 		return (
 			<div className="flex flex-col min-h-dvh bg-gray-100 p-4 m-0 print:bg-white">

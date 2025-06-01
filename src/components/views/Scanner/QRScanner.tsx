@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,47 +7,81 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useQRScanner from "./useQRScanner";
 import Image from "next/image";
 import { Home } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 export default function QRScanner() {
-	const router = useRouter();
 	const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
 	const [hasScanned, setHasScanned] = useState(false);
-
 	const { inventoryData, isLoadingInventory, setId, roomData, isLoadingRoom } = useQRScanner();
 
-	const startScanner = useCallback(() => {
-		const html5QrCode = new Html5Qrcode("reader");
-		html5QrCodeRef.current = html5QrCode;
+	const startScanner = async () => {
+		try {
+			const html5QrCode = new Html5Qrcode("reader");
+			html5QrCodeRef.current = html5QrCode;
 
-		Html5Qrcode.getCameras().then((devices) => {
+			const devices = await Html5Qrcode.getCameras();
 			if (devices && devices.length) {
 				const cameraId = devices[0].id;
-				html5QrCode.start(
+				await html5QrCode.start(
 					cameraId,
 					{ fps: 10, qrbox: 250 },
 					(decodedText) => {
 						setHasScanned(true);
 						setId(decodedText);
-						html5QrCode.stop();
+						html5QrCodeRef.current?.stop().then(() => {
+							console.log("Scanner stopped after successful scan");
+						});
 					},
 					(errorMessage) => {
 						console.log("Scan error:", errorMessage);
 					}
 				);
+			} else {
+				console.error("No cameras found");
 			}
-		});
-	}, []);
+		} catch (err) {
+			console.error("Scanner start error:", err);
+		}
+	};
 
-	const resetScanner = () => {
+	const resetScanner = async () => {
 		setHasScanned(false);
-		startScanner();
+		await startScanner();
 	};
 
 	useEffect(() => {
-		startScanner();
+		let isMounted = true;
+
+		const initScanner = async () => {
+			// 🔃 Cleanup jika ada instance sebelumnya
+			if (html5QrCodeRef.current) {
+				try {
+					await html5QrCodeRef.current.stop();
+				} catch (err) {
+					console.error("Cleanup error:", err);
+				}
+				html5QrCodeRef.current = null;
+			}
+
+			setHasScanned(false);
+
+			// 🔐 Pastikan hanya dijalankan sekali
+			if (isMounted && !html5QrCodeRef.current) {
+				startScanner();
+			}
+		};
+
+		initScanner();
+
 		return () => {
-			html5QrCodeRef.current?.stop().catch((err) => console.error("Stop error:", err));
+			// Cleanup saat unmount
+			isMounted = false;
+			const currentScanner = html5QrCodeRef.current;
+			if (currentScanner) {
+				currentScanner
+					.stop()
+					.then(() => currentScanner.clear())
+					.catch((err) => console.error("Cleanup stop error:", err));
+			}
 		};
 	}, []);
 
@@ -58,7 +92,14 @@ export default function QRScanner() {
 					<CardHeader>
 						<div className="relative w-full">
 							<CardTitle className="text-center">QR Code Scanner</CardTitle>
-							<Button onClick={() => router.push("/auth/login")} className="absolute z-[10] top-0 right-0 bg-primary" size="icon" type="button">
+							<Button
+								onClick={() => {
+									window.close();
+								}}
+								className="absolute z-[10] top-0 right-0 bg-primary"
+								size="icon"
+								type="button"
+							>
 								<Home className="h-4 w-4" />
 							</Button>
 						</div>

@@ -39,7 +39,7 @@ const JenisInventaris = ({ type, items, room }: PropsType) => {
 						<th rowSpan={2} className="border border-black">
 							Ruang
 						</th>
-						<th rowSpan={2} className="border border-black">
+						<th rowSpan={2} colSpan={5} className="border border-black">
 							Kode Barang
 						</th>
 						<th rowSpan={2} className="border border-black">
@@ -75,7 +75,12 @@ const JenisInventaris = ({ type, items, room }: PropsType) => {
 						<tr key={item._id} className="hover:bg-gray-100 text-center">
 							<td className="border border-gray-300 px-2 py-1">{i + 1}</td>
 							<td className="border border-gray-300 px-2 py-1">{room.find((r) => r._id === item.room)?.name || "Tidak Diketahui"}</td>
-							<td className="border border-gray-300 px-2 py-1">{item.code}</td>
+							{Array.from({ length: 5 }).map((_, index) => (
+								<td key={index} className="border border-gray-300 px-2 py-1">
+									{item.code?.slice(index * 2, index * 2 + 2) || ""}
+								</td>
+							))}
+
 							<td className="border border-gray-300 px-2 py-1">{item.name}</td>
 							<td className="border border-gray-300 px-2 py-1">{item.condition}</td>
 							<td className="border border-gray-300 px-2 py-1">{item.material}</td>
@@ -89,22 +94,27 @@ const JenisInventaris = ({ type, items, room }: PropsType) => {
 					))}
 				</tbody>
 			</table>
-			{/* Tanda Tangan */}
-			<div className="mt-16 text-sm mx-4">
+			<div
+				className="mt-16 text-sm mx-4"
+				style={{
+					pageBreakInside: "avoid",
+					breakInside: "avoid", // untuk dukungan modern
+				}}
+			>
 				<div className="flex justify-between">
 					{/* Kiri */}
 					<div className="text-center">
-						<p className="mb-2">Purwakarta, {formatDate(new Date())}</p>
+						<p className="mb-2">Mengetahui,</p>
 						<p className="mb-12">Kepala Puskesmas Bungursari</p>
-						<p className="mt-2 capitalize font-semibold underline">{"drg. Suzie Deciana Rachmawati"}</p>
+						<p className="mt-2 capitalize font-semibold underline">drg. Suzie Deciana Rachmawati</p>
 						<p>NIP : 19661224 199403 2 001</p>
 					</div>
 
 					{/* Kanan */}
 					<div className="text-center">
-						<p className="mb-2">Mengetahui,</p>
-						<p className="mb-12">Penanggung Jawab Inventaris</p>
-						<p className="mt-2 capitalize font-semibold underline">{"Yoppa Nugraha Nurul I, A.Md. Kes"}</p>
+						<p className="mb-2">Purwakarta, {formatDate(new Date())}</p>
+						<p className="mb-12">Pengurus Barang</p>
+						<p className="mt-2 capitalize font-semibold underline">Yoppa Nugraha Nurul I, A.Md. Kes</p>
 						<p>NIP : 19970613 202203 1 007</p>
 					</div>
 				</div>

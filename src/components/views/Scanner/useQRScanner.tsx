@@ -8,45 +8,44 @@ import { useState } from "react";
 const useQRScanner = () => {
 	const [id, setId] = useState<string | null>(null);
 
-	const getInventoryById = async () => {
-		if (!id) {
-			throw new Error("ID is required to fetch inventory data");
-		}
-		const res = await inventarisService.getById(id);
-		return res.data.data as InventoryVehicle;
-	};
-
-	const { data: inventoryData, isLoading: isLoadingInventory } = useQuery({
+	const {
+		data: inventoryData,
+		isLoading: isLoadingInventory,
+		isError: isInventoryError,
+	} = useQuery({
 		queryKey: ["inventory_scanner", id],
-		queryFn: getInventoryById,
+		queryFn: async () => {
+			if (!id) return null;
+			const res = await inventarisService.getById(id);
+			return res.data.data as InventoryVehicle;
+		},
 		enabled: !!id,
-		refetchOnMount: true,
-		refetchOnWindowFocus: true,
+		staleTime: 60 * 1000, // Cache for 1 minute
 	});
 
-	const getRoomById = async () => {
-		if (!inventoryData?.room) {
-			throw new Error("ID is required to fetch room data");
-		}
-		const res = await roomServices.getById(inventoryData.room);
-		return res.data.data as Room;
-	};
-
-	const { data: roomData, isLoading: isLoadingRoom } = useQuery({
+	const {
+		data: roomData,
+		isLoading: isLoadingRoom,
+		isError: isRoomError,
+	} = useQuery({
 		queryKey: ["room_scanner", inventoryData?.room],
-		queryFn: getRoomById,
-		enabled: !!inventoryData?.room,
-		refetchOnMount: true,
-		refetchOnWindowFocus: true,
+		queryFn: async () => {
+			if (!inventoryData?.room) return null;
+			const res = await roomServices.getById(inventoryData.room);
+			return res.data.data as Room;
+		},
+		enabled: !!inventoryData?.room, // Only fetch if room ID exists
+		staleTime: 60 * 1000,
 	});
 
 	return {
 		inventoryData,
 		isLoadingInventory,
+		isInventoryError,
 		setId,
-
 		roomData,
 		isLoadingRoom,
+		isRoomError,
 	};
 };
 

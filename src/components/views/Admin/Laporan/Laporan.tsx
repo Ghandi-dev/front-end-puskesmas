@@ -17,27 +17,39 @@ const Laporan = () => {
 
 	const { dataInventories, isLoadingInventories, condition, setCondition, setRoom, dataRooms, room, setType, type } = useLaporan();
 
-	const topContent = useMemo(
-		() => (
+	const topContent = useMemo(() => {
+		const handleCetak = () => {
+			if (!dataInventories?.data || !dataRooms) {
+				alert("Data belum tersedia. Harap tunggu beberapa saat.");
+				return;
+			}
+
+			localStorage.setItem(
+				"laporanFilters",
+				JSON.stringify({
+					inventories: dataInventories.data,
+					rooms: dataRooms,
+				})
+			);
+			router.push("/cetak-laporan");
+		};
+
+		return (
 			<div className="flex flex-row items-end justify-between gap-4 lg:items-center">
 				<div className="flex items-center gap-4 w-full lg:max-w-[70%]">
 					<Button className="bg-primary" onClick={() => setIsFilterDialogOpen(true)}>
 						Filter
 						<MenuSquare />
 					</Button>
-					{/* <Button className="bg-primary" onClick={() => ""}>
-						Cetak
-						<Printer />
-					</Button> */}
 				</div>
-				<Button className="bg-primary" onClick={() => router.push("kendaraan/create")}>
+				<Button className="bg-primary" onClick={handleCetak}>
 					<Printer />
 					{"Cetak Laporan"}
 				</Button>
 			</div>
-		),
-		[router]
-	);
+		);
+	}, [router, dataInventories, dataRooms]);
+
 	return (
 		<div className="flex flex-1 flex-col gap-4">
 			{topContent}

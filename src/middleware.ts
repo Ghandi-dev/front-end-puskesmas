@@ -39,5 +39,10 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ["/", "/auth/:path*", "/admin/:path*"],
+	matcher: [
+		"/",
+		"/admin/:path*",
+		// Hanya include auth pages yang butuh redirect logic, exclude /api/auth/*
+		"/(auth/(?!api).*)",
+	],
 };

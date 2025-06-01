@@ -43,7 +43,7 @@ const useLaporan = () => {
 		isLoading: isLoadingInventories,
 		refetch: refetchInventories,
 	} = useQuery({
-		queryKey: ["Inventories_vehicle", currentLimit, currentPage, currentSearch, condition, room, year, type],
+		queryKey: ["Inventories", currentLimit, currentPage, currentSearch, condition, room, year, type],
 		queryFn: getInventories,
 		enabled: !!currentLimit && !!currentPage,
 	});
