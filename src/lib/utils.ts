@@ -7,7 +7,7 @@ import { twMerge } from "tailwind-merge";
 const CONDITION_MAP: Record<CONDITION, string> = {
 	[CONDITION.GOOD]: "good",
 	[CONDITION.FAIR]: "fair",
-	[CONDITION.DAMAGED]: "damage",
+	[CONDITION.DAMAGED]: "damaged",
 };
 
 /**
