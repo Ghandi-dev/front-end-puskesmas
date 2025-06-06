@@ -17,4 +17,9 @@ export enum CONDITION {
 	DAMAGED = "Rusak Berat",
 }
 
+export enum ROLES {
+	SUPERADMIN = "super-admin",
+	ADMIN = "admin",
+}
+
 export { LIMIT_LIST, DELAY, PAGE_DEFAULT, LIMIT_DEFAULT, LIMIT_BANNER, LIMIT_EVENT, LIMIT_CATEGORY };

@@ -1,16 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Eye, QrCode, Trash2 } from "lucide-react";
+import { Eye, Info, QrCode, Trash2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface PropTypes {
 	id?: string;
 	onPressButtonDetail?: () => void;
 	onPressButtonDelete?: () => void;
+	onPressButtonInfo?: () => void;
 	hiddenButtonQR?: boolean;
 	hideButtonDelete?: boolean;
 	hiddenButtonDetail?: boolean;
+	hiddenButtonInfo?: boolean;
 	isPendingActivate?: boolean;
 }
 
@@ -18,9 +20,11 @@ const ButtonAction = ({
 	id,
 	onPressButtonDetail,
 	onPressButtonDelete,
+	onPressButtonInfo,
 	hideButtonDelete = false,
 	hiddenButtonQR = false,
 	hiddenButtonDetail = false,
+	hiddenButtonInfo = false,
 }: PropTypes) => {
 	return (
 		<TooltipProvider>
@@ -32,7 +36,7 @@ const ButtonAction = ({
 								<QrCode className="w-4 h-4 text-black" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent side="right" className="w-fit">
+						<TooltipContent side="left" className="w-fit">
 							<p>Cetak QR</p>
 						</TooltipContent>
 					</Tooltip>
@@ -44,12 +48,11 @@ const ButtonAction = ({
 								<Eye className="w-4 h-4 text-blue-600" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent side="right" className="w-fit">
-							<p>Detail</p>
+						<TooltipContent side="left" className="w-fit">
+							<p>Detail/Edit</p>
 						</TooltipContent>
 					</Tooltip>
 				)}
-
 				{!hideButtonDelete && (
 					<Tooltip>
 						<TooltipTrigger asChild>
@@ -57,8 +60,20 @@ const ButtonAction = ({
 								<Trash2 className="w-4 h-4 text-destructive" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent side="right" className="w-fit">
+						<TooltipContent side="left" className="w-fit">
 							<p>Hapus</p>
+						</TooltipContent>
+					</Tooltip>
+				)}
+				{!hiddenButtonInfo && (
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button variant="ghost" size="icon" onClick={onPressButtonInfo}>
+								<Info className="w-4 h-4 text-primary" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent side="left" className="w-fit">
+							<p>Info</p>
 						</TooltipContent>
 					</Tooltip>
 				)}

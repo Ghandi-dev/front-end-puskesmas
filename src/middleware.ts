@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { JWTExtended } from "./types/Auth";
 import { getToken } from "next-auth/jwt";
 import environment from "./config/environment";
+import { ROLES } from "./constant/list.constants";
 
 export async function middleware(request: NextRequest) {
 	const token: JWTExtended | null = await getToken({
@@ -27,7 +28,7 @@ export async function middleware(request: NextRequest) {
 
 	// Jika user login sebagai admin dan mengakses /admin
 	if (pathname.startsWith("/admin")) {
-		if (token?.user?.role !== "admin") {
+		if (token?.user?.role !== ROLES.ADMIN && token?.user?.role !== ROLES.SUPERADMIN) {
 			return NextResponse.redirect(new URL("/", request.url));
 		}
 		if (pathname === "/admin") {

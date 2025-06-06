@@ -15,15 +15,27 @@ import AlertDialogDelete from "@/components/commons/alert-dialog/AlertDialogDele
 import DynamicDialog from "@/components/commons/dialog/DynamicDialog";
 import { MultiSelect } from "@/components/commons/multi-select/MultiSelect";
 import { CONDITION } from "@/constant/list.constants";
+import { InventoryInfo } from "@/components/commons/inventory/InventoryInfo";
 
 const NonMedis = () => {
 	const router = useRouter();
 	const { setUrl, handleChangeSearch } = useChangeUrl();
-	const { dataInventories, isLoadingInventories, handleDeleteInventory, setSelectedInventory, dataRooms, condition, room, setCondition, setRoom } =
-		useNonMedis();
+	const {
+		dataInventories,
+		isLoadingInventories,
+		handleDeleteInventory,
+		selectedInventory,
+		setSelectedInventory,
+		dataRooms,
+		condition,
+		room,
+		setCondition,
+		setRoom,
+	} = useNonMedis();
 
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 	const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
+	const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false);
 
 	useEffect(() => {
 		setUrl();
@@ -39,6 +51,7 @@ const NonMedis = () => {
 					return (
 						<ButtonAction
 							// hideButtonActivate={true}
+							hideButtonDelete
 							id={inventory._id}
 							onPressButtonDetail={() => {
 								router.push(`/admin/inventaris/non-medis/${inventory._id}`);
@@ -46,6 +59,10 @@ const NonMedis = () => {
 							onPressButtonDelete={() => {
 								setSelectedInventory(inventory);
 								setIsDeleteDialogOpen(true);
+							}}
+							onPressButtonInfo={() => {
+								setSelectedInventory(inventory);
+								setIsInfoDialogOpen(true);
 							}}
 						/>
 					);
@@ -130,6 +147,11 @@ const NonMedis = () => {
 						label="Tahun Selesai"
 					/>
 				</div> */}
+			</DynamicDialog>
+
+			{/* info dialog */}
+			<DynamicDialog open={isInfoDialogOpen} onOpenChange={setIsInfoDialogOpen} title="Informasi Inventaris">
+				<InventoryInfo inventory={selectedInventory} />
 			</DynamicDialog>
 
 			{/* Alert Dialog Delete */}

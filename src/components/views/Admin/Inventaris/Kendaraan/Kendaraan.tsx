@@ -15,15 +15,27 @@ import DynamicDialog from "@/components/commons/dialog/DynamicDialog";
 import { MultiSelect } from "@/components/commons/multi-select/MultiSelect";
 import { CONDITION } from "@/constant/list.constants";
 import useKendaraan from "./useKendaraan";
+import { InventoryInfo } from "@/components/commons/inventory/InventoryInfo";
 
 const Kendaraan = () => {
 	const router = useRouter();
 	const { setUrl, handleChangeSearch } = useChangeUrl();
-	const { dataInventories, isLoadingInventories, handleDeleteInventory, setSelectedInventory, dataRooms, condition, room, setCondition, setRoom } =
-		useKendaraan();
+	const {
+		dataInventories,
+		isLoadingInventories,
+		handleDeleteInventory,
+		selectedInventory,
+		setSelectedInventory,
+		dataRooms,
+		condition,
+		room,
+		setCondition,
+		setRoom,
+	} = useKendaraan();
 
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 	const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
+	const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false);
 
 	useEffect(() => {
 		setUrl();
@@ -39,6 +51,7 @@ const Kendaraan = () => {
 					return (
 						<ButtonAction
 							// hideButtonActivate={true}
+							hideButtonDelete
 							id={inventory._id}
 							onPressButtonDetail={() => {
 								router.push(`/admin/inventaris/kendaraan/${inventory._id}`);
@@ -46,6 +59,10 @@ const Kendaraan = () => {
 							onPressButtonDelete={() => {
 								setSelectedInventory(inventory);
 								setIsDeleteDialogOpen(true);
+							}}
+							onPressButtonInfo={() => {
+								setSelectedInventory(inventory);
+								setIsInfoDialogOpen(true);
 							}}
 						/>
 					);
@@ -130,6 +147,11 @@ const Kendaraan = () => {
 						label="Tahun Selesai"
 					/>
 				</div> */}
+			</DynamicDialog>
+
+			{/* info dialog */}
+			<DynamicDialog open={isInfoDialogOpen} onOpenChange={setIsInfoDialogOpen} title="Informasi Inventaris">
+				<InventoryInfo inventory={selectedInventory} />
 			</DynamicDialog>
 
 			{/* Alert Dialog Delete */}

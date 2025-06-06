@@ -92,6 +92,7 @@ const useKendaraan = () => {
 		isLoadingInventories,
 		handleDeleteInventory,
 
+		selectedInventory,
 		setSelectedInventory,
 
 		condition,

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import {
 	SidebarGroup,
@@ -16,21 +16,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation"; // 🔥 Gunakan `usePathname` bukan `useRouter`
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
+import { Profile } from "@/types/Auth";
+import { MENU_LIST_ADMIN, MENU_LIST_SUPERADMIN } from "@/constant/menu.constants";
+import { ROLES } from "@/constant/list.constants";
 
-export function NavMain({
-	items,
-}: {
-	items: {
-		title: string;
-		url: string;
-		icon?: LucideIcon;
-		isActive?: boolean;
-		items?: {
-			title: string;
-			url: string;
-		}[];
-	}[];
-}) {
+export function NavMain({ user }: { user?: Profile }) {
+	const items = user?.role === ROLES.SUPERADMIN ? MENU_LIST_SUPERADMIN : MENU_LIST_ADMIN;
 	const pathname = usePathname();
 
 	return (

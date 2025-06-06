@@ -7,4 +7,14 @@ export const roomSchema = yup.object().shape({
 export type Room = yup.InferType<typeof roomSchema>;
 export type RoomSelected = Omit<Room, "_id"> & {
 	_id: string;
+	createdBy: {
+		_id: string;
+		fullname: string;
+	};
+	updatedBy: {
+		_id: string;
+		fullname: string;
+	};
+	createdAt: Date;
+	updatedAt: Date;
 };

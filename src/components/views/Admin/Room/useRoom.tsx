@@ -2,15 +2,16 @@
 
 import useChangeUrl from "@/hooks/useChangeUrl";
 import roomServices from "@/service/room.service";
-import { Room, roomSchema } from "@/types/Room";
+import { Room, roomSchema, RoomSelected } from "@/types/Room";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const useRoom = () => {
-	const [selectedIdRoom, setSelectedIdRoom] = useState<string>("");
+	const queryClient = useQueryClient();
+	const [selectedRoom, setSelectedRoom] = useState<RoomSelected>({} as RoomSelected);
 	const { currentLimit, currentPage, currentSearch } = useChangeUrl();
 
 	const getRooms = async () => {
@@ -72,9 +73,39 @@ const useRoom = () => {
 		},
 	});
 
+	const formEdit = useForm({
+		mode: "onChange",
+		resolver: yupResolver(roomSchema),
+		defaultValues: {
+			name: selectedRoom?.name,
+		},
+	});
+
+	const updateRoom = async ({ id, data }: { id: string; data: Room }) => {
+		const res = await roomServices.update(id, data);
+		return res.data;
+	};
+
+	const { mutate: mutateUpdateRoom, isPending: isPendingUpdateRoom } = useMutation({
+		mutationFn: updateRoom,
+		onSuccess: () => {
+			refetchRooms();
+			queryClient.invalidateQueries({ queryKey: ["rooms"], exact: false });
+			toast.success("Berhasil memperbarui ruangan");
+		},
+		onError: (error) => {
+			toast.error(`Gagal memperbarui ruangan: ${error instanceof Error ? error.message : "Unknown error"}`);
+		},
+	});
+
+	const handleUpdateRoom = (data: Room) => {
+		if (!selectedRoom) return;
+		mutateUpdateRoom({ id: selectedRoom._id, data });
+	};
+
 	const handleDeleteRoom = () => {
-		if (!selectedIdRoom) return;
-		mutateDeleteRoom(selectedIdRoom);
+		if (!selectedRoom) return;
+		mutateDeleteRoom(selectedRoom._id);
 	};
 
 	const handleCreateRoom = (data: Room) => {
@@ -82,10 +113,15 @@ const useRoom = () => {
 	};
 	return {
 		form,
+		formEdit,
+
+		handleUpdateRoom,
+		isPendingUpdateRoom,
 
 		dataRooms,
 		isLoadingRooms,
-		setSelectedIdRoom,
+		selectedRoom,
+		setSelectedRoom,
 
 		isPendingCreateRoom,
 		mutateCreateRoom,

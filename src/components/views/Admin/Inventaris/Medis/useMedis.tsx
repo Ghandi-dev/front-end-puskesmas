@@ -92,6 +92,7 @@ const useMedis = () => {
 		isLoadingInventories,
 		handleDeleteInventory,
 
+		selectedInventory,
 		setSelectedInventory,
 
 		condition,

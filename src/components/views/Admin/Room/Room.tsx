@@ -15,15 +15,21 @@ import DynamicDialog from "@/components/commons/dialog/DynamicDialog";
 import { Form } from "@/components/ui/form";
 import { InputWithLabel } from "@/components/commons/inputs/InputWithLabel";
 import { Spinner } from "@/components/ui/spinner";
+import { RoomInfo } from "@/components/commons/room/RoomInfo";
 
 const RoomPage = () => {
 	const { setUrl, handleChangeSearch } = useChangeUrl();
 	const {
 		form,
+		formEdit,
+
+		handleUpdateRoom,
+		isPendingUpdateRoom,
 
 		dataRooms,
 		isLoadingRooms,
-		setSelectedIdRoom,
+		selectedRoom,
+		setSelectedRoom,
 
 		isPendingCreateRoom,
 
@@ -36,8 +42,14 @@ const RoomPage = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	useEffect(() => {
+		formEdit.setValue("name", selectedRoom.name);
+	}, [selectedRoom, formEdit]);
+
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+	const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+	const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false);
 
 	const renderCell = useCallback(
 		(room: RoomSelected, columnKey: Key) => {
@@ -47,11 +59,18 @@ const RoomPage = () => {
 				case "actions":
 					return (
 						<ButtonAction
-							hiddenButtonDetail
 							hiddenButtonQR
 							onPressButtonDelete={() => {
-								setSelectedIdRoom(room?._id);
+								setSelectedRoom(room);
 								setIsDeleteDialogOpen(true);
+							}}
+							onPressButtonDetail={() => {
+								setSelectedRoom(room);
+								setIsUpdateDialogOpen(true);
+							}}
+							onPressButtonInfo={() => {
+								setSelectedRoom(room);
+								setIsInfoDialogOpen(true);
 							}}
 						/>
 					);
@@ -59,7 +78,7 @@ const RoomPage = () => {
 					return cellValue as React.ReactNode;
 			}
 		},
-		[setSelectedIdRoom]
+		[setSelectedRoom]
 	);
 
 	const topContent = useMemo(
@@ -95,7 +114,7 @@ const RoomPage = () => {
 				totalPages={dataRooms?.pagination?.totalPages || 0}
 				showLimit
 			/>
-			{/* Form Add Santri */}
+			{/* Form create room */}
 			<DynamicDialog title="Form Tambah Ruangan" open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen} isModal>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(handleCreateRoom)} className="mt-4 flex flex-col gap-4">
@@ -106,7 +125,32 @@ const RoomPage = () => {
 					</form>
 				</Form>
 			</DynamicDialog>
-			{/* Form Filter Santri
+
+			{/* Form update room */}
+			<DynamicDialog title="Form Ubah Ruangan" open={isUpdateDialogOpen} onOpenChange={setIsUpdateDialogOpen} isModal>
+				<Form {...formEdit}>
+					<form
+						onSubmit={(e) => {
+							e.preventDefault();
+							formEdit.handleSubmit((data) => {
+								handleUpdateRoom(data);
+								setIsUpdateDialogOpen(false);
+							})(e);
+						}}
+						className="mt-4 flex flex-col gap-4"
+					>
+						<InputWithLabel<Room> fieldTitle="Nama" nameInSchema="name" />
+						<Button type="submit" className="w-full bg-primary" disabled={isPendingUpdateRoom}>
+							{isPendingUpdateRoom ? <Spinner /> : "Simpan"}
+						</Button>
+					</form>
+				</Form>
+			</DynamicDialog>
+
+			{/* info dialog */}
+			<DynamicDialog open={isInfoDialogOpen} onOpenChange={setIsInfoDialogOpen} title="Informasi Inventaris">
+				<RoomInfo room={selectedRoom} />
+			</DynamicDialog>
 
 			{/* Alert Dialog Delete */}
 			<AlertDialogDelete
