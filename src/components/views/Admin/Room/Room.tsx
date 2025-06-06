@@ -60,6 +60,7 @@ const RoomPage = () => {
 					return (
 						<ButtonAction
 							hiddenButtonQR
+							hideButtonDelete
 							onPressButtonDelete={() => {
 								setSelectedRoom(room);
 								setIsDeleteDialogOpen(true);
