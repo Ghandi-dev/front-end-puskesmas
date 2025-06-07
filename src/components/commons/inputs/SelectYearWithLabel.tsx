@@ -34,7 +34,7 @@ export function SelectYearWithLabel<S>({ fieldTitle, nameInSchema, placeholder =
 				<FormItem>
 					<FormLabel htmlFor={nameInSchema}>{fieldTitle}</FormLabel>
 					<Popover>
-						<PopoverTrigger asChild className="z-[999]">
+						<PopoverTrigger asChild>
 							<FormControl>
 								<Button
 									variant="outline"
