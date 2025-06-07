@@ -43,8 +43,6 @@ const User = () => {
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 	const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
-	console.log("dataUsers", dataUsers);
-
 	const renderCell = useCallback(
 		(user: UserSelected, columnKey: Key) => {
 			const cellValue = typeof columnKey === "string" && columnKey in user ? user[columnKey as keyof typeof user] : null;
