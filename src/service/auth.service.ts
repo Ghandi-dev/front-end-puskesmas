@@ -1,4 +1,4 @@
-import { Login, Register } from "@/types/Auth";
+import { Login, Register, UpdatePassword } from "@/types/Auth";
 import endpoint from "./endpoint.constants";
 import { instance } from "@/lib/axios/instance";
 
@@ -13,8 +13,7 @@ const authServices = {
 	getProfile: () => instance.get(`${endpoint.AUTH}/me`),
 	getAll: (params: string) => instance.get(`${endpoint.AUTH}/users?${params}`),
 	updateRole: (id: string) => instance.put(`${endpoint.AUTH}/update-role/${id}`),
-
-	// updatePassword: (payload: UpdatePasswordSchemaType) => instance.post(`${endpoint.AUTH}/update-password`, payload),
+	updatePassword: (payload: UpdatePassword) => instance.post(`${endpoint.AUTH}/update-password`, payload),
 };
 
 export default authServices;
