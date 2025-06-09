@@ -34,7 +34,7 @@ const ChangePassword = () => {
 						<div className={cn("flex flex-col", Object.keys(form.formState.errors).length > 0 ? "gap-3" : "gap-6")}>
 							<InputPasswordWithLabel<UpdatePassword> fieldTitle="Password Lama" nameInSchema="oldPassword" />
 							<InputPasswordWithLabel<UpdatePassword> fieldTitle="Password Baru" nameInSchema="password" />
-							<InputPasswordWithLabel<UpdatePassword> fieldTitle="Konfirmasi Password Baru" nameInSchema="confirmPassword" />
+							<InputPasswordWithLabel<UpdatePassword> fieldTitle="Konfirmasi Password Baru" nameInSchema="passwordConfirm" />
 						</div>
 						<div className="flex justify-end">
 							<Button type="submit" className="w-full md:w-auto" disabled={isPendingUpdatePassword}>

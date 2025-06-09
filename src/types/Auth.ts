@@ -60,6 +60,12 @@ export const registerSchema = yup.object().shape({
 	passwordConfirm: validatePasswordConfirm,
 });
 
+export const updateProfileSchema = yup.object().shape({
+	fullname: yup.string().required("Nama harus diisi"),
+	email: yup.string().required("Email harus diisi").email("Email tidak valid"),
+	profilePicture: yup.mixed<FileList | string>().required("Foto Profil harus diisi"),
+});
+
 export const userSchema = yup.object().shape({
 	username: yup.string().required("Username harus diisi"),
 	fullname: yup.string().required("Nama harus diisi"),
@@ -71,7 +77,7 @@ export const userSchema = yup.object().shape({
 export const updatePasswordSchema = yup.object().shape({
 	oldPassword: validatePassword,
 	password: validatePassword,
-	confirmPassword: validatePasswordConfirm,
+	passwordConfirm: validatePasswordConfirm,
 });
 
 type UserSchema = yup.InferType<typeof userSchema>;
@@ -81,3 +87,4 @@ export type UserSelected = Omit<UserSchema, "_id"> & {
 export type Login = yup.InferType<typeof loginSchema>;
 export type Register = yup.InferType<typeof registerSchema>;
 export type UpdatePassword = yup.InferType<typeof updatePasswordSchema>;
+export type UpdateProfile = yup.InferType<typeof updateProfileSchema>;

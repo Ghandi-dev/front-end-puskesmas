@@ -19,7 +19,7 @@ const useChangePassword = () => {
 		defaultValues: {
 			oldPassword: "",
 			password: "",
-			confirmPassword: "",
+			passwordConfirm: "",
 		},
 	});
 
